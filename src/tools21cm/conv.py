@@ -57,6 +57,10 @@ def set_sim_constants(boxsize_cMpc):
 	elif hf.flt_comp(boxsize, 200.):
 		hf.print_msg('Setting_conversion_factors for 200/h Mpc box')
 		nbox_fine = 3456
+	elif hf.flt_comp(boxsize, 100.):
+		hf.print_msg('Setting_conversion_factors for 100/h Mpc box (LCDM/IDM)')
+		nbox_fine = 8192
+
 	else:
 		raise Exception('Invalid boxsize (%.3f cMpc)' % boxsize_cMpc)
 
