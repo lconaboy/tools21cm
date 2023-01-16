@@ -15,7 +15,7 @@ from . import smoothing
 import scipy.interpolate
 from tqdm import tqdm
 
-def make_lightcone(filenames, z_low = None, z_high = None, depth_mhz = None, file_redshifts = None, cbin_bits = 32, cbin_order = 'c', los_axis = 0, raw_density = False, interpolation='linear', reading_function=None, box_length_mpc=None):
+def make_lightcone(filenames, z_low = None, z_high = None, z_arr=None, depth_mhz = None, file_redshifts = None, cbin_bits = 32, cbin_order = 'c', los_axis = 0, raw_density = False, interpolation='linear', reading_function=None, box_length_mpc=None):
     '''
     Make a lightcone from xfrac, density or dT data. Replaces freq_box.
     
@@ -80,8 +80,11 @@ def make_lightcone(filenames, z_low = None, z_high = None, depth_mhz = None, fil
         mesh_size = reading_function(filenames[0]).shape
 
     assert len(file_redshifts) == len(filenames)
-    
-    output_z = _get_output_z(file_redshifts, z_low, z_high, mesh_size[0], box_length_mpc=box_length_mpc, dnu=depth_mhz)
+
+    if (z_arr is None):
+        output_z = _get_output_z(file_redshifts, z_low, z_high, mesh_size[0], box_length_mpc=box_length_mpc, dnu=depth_mhz)
+    else:
+        output_z = z_arr
 
     #Make the output 32-bit to save memory 
     lightcone = np.zeros((mesh_size[0], mesh_size[1], len(output_z)), dtype='float32')
